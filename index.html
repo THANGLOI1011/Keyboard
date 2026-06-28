@@ -62,41 +62,66 @@
 
       /* THEME SYSTEM (background only) */
       .theme-pink-cute {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+            background-image: url("/assets/bg-defaut.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+
         --preview-bg: linear-gradient(180deg, #ffffff 0%, #fff1fb 100%);
         --preview-border: #f6e711;
       }
 
       .theme-football-cr7 {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
         --preview-bg: linear-gradient(180deg, #111218 0%, #09090c 100%);
         --preview-border: #d4af37;
       }
 
       .theme-anime {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         --preview-bg: linear-gradient(180deg, #251242 0%, #0f0820 100%);
         --preview-border: #a8a8a8;
       }
 
       .theme-neon {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         --preview-bg: linear-gradient(180deg, #e3c690 0%, #ffaf64 100%);
         --preview-border: #924400;
       }
 
       .theme-cat {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         --preview-bg: linear-gradient(180deg, #fffaf2 0%, #fff0d7 100%);
         --preview-border: #ffffff;
       }
       .theme-dark {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         --preview-bg: linear-gradient(180deg, #1d1d24 0%, #111116 100%);
         --preview-border: #0f5fff;
       }
       .theme-dark-pro {
-        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
         --preview-bg: linear-gradient(180deg, #1d1d24 0%, #111116 100%);
         --preview-border: #7d0501;
       }
@@ -516,6 +541,29 @@
           transform: scale(1);
         }
       }
+      .gradient-title span {
+    position: relative;
+    display: inline-block;
+
+    font-size: 32px;
+    font-weight: 900;
+
+    background: linear-gradient(to right, #3885f9, #ff58b1);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.gradient-title span::before {
+    content: attr(data-text);
+
+    position: absolute;
+    inset: 0;
+
+    color: transparent;
+    -webkit-text-stroke: 3px #fff;
+
+    z-index: -1;
+}
     </style>
   </head>
 
@@ -526,7 +574,10 @@
 
       <!-- TITLE -->
       <div class="header-section">
-        <h2>Pick Your <span>Keyboard Theme</span></h2>
+       <h2 class="gradient-title">
+    Pick Your
+    <span data-text="Keyboard Theme">Keyboard Theme</span>
+</h2>
       </div>
 
       <!-- MAIN IMAGE PREVIEW -->
@@ -762,171 +813,146 @@
         return `data:image/png;base64,${input}`;
       }
       // ======================
-// DEFAULT
-// ======================
-const DEFAULT_THEME = "theme-football-cr7";
+      // DEFAULT
+      // ======================
+      const DEFAULT_THEME = "theme-football-cr7";
 
-const firstThumb = document.querySelector(".btn-pink-cute");
-const handHint = document.getElementById("handHint");
+      const firstThumb = document.querySelector(".btn-pink-cute");
+      const handHint = document.getElementById("handHint");
 
-let guideRemoved = false;
-let handAnimation = null;
+      let guideRemoved = false;
+      let handAnimation = null;
 
-// ======================
-// THUMBNAILS
-// ======================
-function applyThemeThumbnails() {
+      // ======================
+      // THUMBNAILS
+      // ======================
+      function applyThemeThumbnails() {
+        themeItems.forEach((item) => {
+          const theme = item.dataset.theme;
 
-  themeItems.forEach((item) => {
+          // Ẩn theme mặc định
+          if (theme === DEFAULT_THEME) {
+            item.style.display = "none";
+            return;
+          }
 
-    const theme = item.dataset.theme;
+          item.style.display = "";
 
-    // Ẩn theme mặc định
-    if (theme === DEFAULT_THEME) {
-      item.style.display = "none";
-      return;
-    }
+          const thumb = item.querySelector(".theme-thumbnail");
 
-    item.style.display = "";
+          if (!thumb) return;
 
-    const thumb = item.querySelector(".theme-thumbnail");
+          let image = thumb.querySelector(".theme-thumbnail-image");
 
-    if (!thumb) return;
+          if (!image) {
+            image = document.createElement("img");
 
-    let image = thumb.querySelector(".theme-thumbnail-image");
+            image.className = "theme-thumbnail-image";
 
-    if (!image) {
+            thumb.appendChild(image);
+          }
 
-      image = document.createElement("img");
+          image.src = THEME_ASSETS[theme].thumbnail;
+        });
+      }
 
-      image.className = "theme-thumbnail-image";
+      // ======================
+      // PREVIEW
+      // ======================
+      function applyKeyboardThemeImage(theme) {
+        mainThemeImage.classList.remove("animate");
 
-      thumb.appendChild(image);
+        void mainThemeImage.offsetWidth;
 
-    }
+        mainThemeImage.src =
+          THEME_ASSETS[theme].keyboardBg || THEME_ASSETS[theme].thumbnail;
 
-    image.src = THEME_ASSETS[theme].thumbnail;
+        requestAnimationFrame(() => {
+          mainThemeImage.classList.add("animate");
+        });
+      }
 
-  });
+      // ======================
+      // REMOVE GUIDE
+      // ======================
+      function removeGuide() {
+        if (guideRemoved) return;
 
-}
+        guideRemoved = true;
 
-// ======================
-// PREVIEW
-// ======================
-function applyKeyboardThemeImage(theme) {
+        firstThumb?.classList.remove("guide");
 
-  mainThemeImage.classList.remove("animate");
+        if (handAnimation) {
+          handAnimation.stop();
+        }
 
-  void mainThemeImage.offsetWidth;
+        if (handHint) {
+          handHint.style.display = "none";
+        }
+      }
 
-  mainThemeImage.src =
-    THEME_ASSETS[theme].keyboardBg ||
-    THEME_ASSETS[theme].thumbnail;
+      // ======================
+      // THEME CLICK
+      // ======================
+      themeItems.forEach((item) => {
+        item.addEventListener("click", (e) => {
+          e.stopPropagation();
 
-  requestAnimationFrame(() => {
+          removeGuide();
 
-    mainThemeImage.classList.add("animate");
+          const theme = item.dataset.theme;
 
-  });
+          startBackgroundMusic();
 
-}
+          playPickSound();
 
-// ======================
-// REMOVE GUIDE
-// ======================
-function removeGuide() {
+          document.body.className = theme;
 
-  if (guideRemoved) return;
+          curtain.classList.add("flash");
 
-  guideRemoved = true;
+          setTimeout(() => {
+            curtain.classList.remove("flash");
+          }, 200);
 
-  firstThumb?.classList.remove("guide");
+          themeItems.forEach((t) => t.classList.remove("active"));
 
-  if (handAnimation) {
-    handAnimation.stop();
-  }
+          item.classList.add("active");
 
-  if (handHint) {
-    handHint.style.display = "none";
-  }
+          applyKeyboardThemeImage(theme);
+        });
+      });
 
-}
+      // ======================
+      // CTA
+      // ======================
+      ctaBtn.addEventListener("click", () => {
+        startBackgroundMusic();
 
-// ======================
-// THEME CLICK
-// ======================
-themeItems.forEach((item) => {
+        window.open(PLAY_STORE_URL, "_blank");
+      });
 
-  item.addEventListener("click", (e) => {
+      // ======================
+      // LOTTIE
+      // ======================
+      window.addEventListener("DOMContentLoaded", () => {
+        handAnimation = lottie.loadAnimation({
+          container: handHint,
 
-    e.stopPropagation();
+          renderer: "svg",
 
-    removeGuide();
+          loop: true,
 
-    const theme = item.dataset.theme;
+          autoplay: true,
 
-    startBackgroundMusic();
+          path: "/assets/Hand-tap.json",
+        });
 
-    playPickSound();
+        firstThumb?.classList.add("guide");
 
-    document.body.className = theme;
+        applyThemeThumbnails();
 
-    curtain.classList.add("flash");
-
-    setTimeout(() => {
-
-      curtain.classList.remove("flash");
-
-    },200);
-
-    themeItems.forEach(t => t.classList.remove("active"));
-
-    item.classList.add("active");
-
-    applyKeyboardThemeImage(theme);
-
-  });
-
-});
-
-// ======================
-// CTA
-// ======================
-ctaBtn.addEventListener("click", () => {
-
-  startBackgroundMusic();
-
-  window.open(PLAY_STORE_URL,"_blank");
-
-});
-
-// ======================
-// LOTTIE
-// ======================
-window.addEventListener("DOMContentLoaded", () => {
-
-  handAnimation = lottie.loadAnimation({
-
-    container: handHint,
-
-    renderer: "svg",
-
-    loop: true,
-
-    autoplay: true,
-
-    path: "/assets/Hand-tap.json",
-
-  });
-
-  firstThumb?.classList.add("guide");
-
-  applyThemeThumbnails();
-
-  applyKeyboardThemeImage(DEFAULT_THEME);
-
-});
+        applyKeyboardThemeImage(DEFAULT_THEME);
+      });
     </script>
   </body>
 </html>
