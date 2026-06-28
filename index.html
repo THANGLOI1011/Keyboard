@@ -1,0 +1,932 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <title>Pick Your Keyboard Theme</title>
+    <style>
+      :root {
+        /* Adjustable sizing controls */
+        --preview-width: min(92vw, 360px);
+        --preview-height: clamp(140px, 26vh, 240px);
+        --theme-item-width: clamp(66px, 18vw, 90px);
+        --theme-item-height: clamp(66px, 18vw, 90px);
+        --theme-item-gap: clamp(6px, 1.6vw, 12px);
+      }
+      /* RESET & BODY BACKGROUND */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        background: var(--theme-bg, #ececef);
+        color: #333333;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        transition: background 0.4s ease;
+      }
+
+      /* VIEWPORT CONTAINER FOR COMPUTER/TABLET/MOBILE RESPONSIVENESS */
+      .app-container {
+        width: 100%;
+        max-width: 480px;
+        height: 100dvh;
+        max-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 24px;
+        padding: clamp(12px, 2.5vh, 28px) 14px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .app-container > * {
+        flex-shrink: 0;
+      }
+
+      /* THEME SYSTEM (background only) */
+      .theme-pink-cute {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #ffffff 0%, #fff1fb 100%);
+        --preview-border: #f6e711;
+      }
+
+      .theme-football-cr7 {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #111218 0%, #09090c 100%);
+        --preview-border: #d4af37;
+      }
+
+      .theme-anime {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #251242 0%, #0f0820 100%);
+        --preview-border: #a8a8a8;
+      }
+
+      .theme-neon {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #e3c690 0%, #ffaf64 100%);
+        --preview-border: #924400;
+      }
+
+      .theme-cat {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #fffaf2 0%, #fff0d7 100%);
+        --preview-border: #ffffff;
+      }
+      .theme-dark {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #1d1d24 0%, #111116 100%);
+        --preview-border: #0f5fff;
+      }
+      .theme-dark-pro {
+        --theme-bg: radial-gradient(circle at center, #0a1b9c 0%, #0e2e55 100%);
+        --preview-bg: linear-gradient(180deg, #1d1d24 0%, #111116 100%);
+        --preview-border: #7d0501;
+      }
+
+      /* TITLE HEADER */
+      .header-section {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 0;
+      }
+
+      .header-section h2 {
+        font-size: 24px;
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.1;
+      }
+
+      .header-section h2 span {
+        background: linear-gradient(to right, #3885f9, #ff58b1);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: block;
+        font-size: 32px;
+        letter-spacing: 0.2px;
+        margin-top: 1px;
+      }
+
+      .header-subtitle {
+        font-size: 12px;
+        color: #7b8099;
+        margin-top: 6px;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .theme-football-cr7 .header-subtitle,
+      .theme-anime .header-subtitle,
+      .theme-neon .header-subtitle,
+      .theme-dark-pro .header-subtitle {
+        color: #a5abbf;
+      }
+
+      /* MAIN IMAGE PREVIEW AREA */
+      .keyboard-preview-wrapper {
+        width: var(--preview-width);
+        height: var(--preview-height);
+        position: relative;
+        border-radius: 16px;
+        border: 2px solid var(--preview-border, #111111);
+        overflow: hidden;
+        box-shadow: none;
+        margin: 0;
+        background: var(--preview-bg, #0e1117);
+        flex: 0 0 auto;
+      }
+
+      .main-theme-image {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: var(--preview-bg, #0e1117);
+      }
+
+      /* THEME GRID (3x2 Layout) */
+      .theme-grid {
+        display: grid;
+        grid-template-columns: repeat(3, var(--theme-item-width));
+        grid-auto-rows: var(--theme-item-height);
+        gap: 12px;
+        justify-content: center;
+        width: 100%;
+        padding: 0;
+      }
+
+      .theme-item {
+        width: var(--theme-item-width);
+        height: var(--theme-item-height);
+        background: transparent;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        transition:
+          transform 0.2s ease,
+          background-color 0.2s ease;
+        box-shadow: none;
+      }
+
+      .theme-item:active {
+        transform: scale(0.9);
+      }
+      .theme-item:hover {
+        transform: scale(1);
+      }
+
+      .theme-item:hover .theme-thumbnail {
+        transform: scale(1.08);
+        filter: brightness(1.04);
+      }
+
+      .theme-item:active .theme-thumbnail {
+        transform: scale(1);
+      }
+
+      .theme-item.active {
+        border-color: #ff4fac;
+        background: rgba(255, 79, 172, 0.08);
+        transform: scale(1.02);
+      }
+
+      .theme-thumbnail {
+        width: 100%;
+        height: 100%;
+        border-radius: 12px;
+        border: 1px solid var(--thumb-border, transparent);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        transition:
+          transform 0.22s ease,
+          box-shadow 0.22s ease,
+          filter 0.22s ease;
+        will-change: transform;
+      }
+
+      .theme-thumbnail > * {
+        position: relative;
+        z-index: 1;
+      }
+
+      .theme-thumbnail-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: 0;
+      }
+
+      .theme-thumbnail.has-custom-thumbnail {
+        background: #0f172a;
+        border: 1px solid var(--thumb-border, transparent);
+      }
+
+      .theme-thumbnail.has-custom-thumbnail .thumb-icon {
+        display: none;
+      }
+
+      /* Individual selector design */
+      .thumb-pink {
+        --thumb-border: #f6e711;
+        background: linear-gradient(135deg, #ffcae9 0%, #ffd5f0 100%);
+      }
+
+      .thumb-football {
+        --thumb-border: #d4af37;
+        background: linear-gradient(135deg, #1a1b21 0%, #09090c 100%);
+      }
+
+      .thumb-anime {
+        --thumb-border: #a8a8a8;
+        background: linear-gradient(135deg, #34165f 0%, #1b093a 100%);
+      }
+
+      .thumb-neon {
+        --thumb-border: #924400;
+        background: linear-gradient(135deg, #0f1418 0%, #050608 100%);
+      }
+
+      .thumb-cat {
+        --thumb-border: #ffffff;
+        background: linear-gradient(135deg, #ffd98d 0%, #fff0c7 100%);
+      }
+
+      .thumb-dark {
+        --thumb-border: #7d0501;
+        background: linear-gradient(135deg, #2b2b34 0%, #141419 100%);
+      }
+
+      .thumb-icon {
+        display: none;
+      }
+
+      .theme-label {
+        font-size: 0;
+        font-weight: 700;
+        color: #64748b;
+        margin-top: 2px;
+      }
+
+      .theme-item.active .theme-thumbnail {
+        box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.35);
+      }
+
+      .cta-btn {
+        width: 56%;
+        height: clamp(48px, 6.5vh, 58px);
+        background: linear-gradient(to right, #74abff, #ff69b8);
+        color: #ffffff;
+        border: 2px solid #ffffff;
+        border-radius: 30px;
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 0.4px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 8px 18px rgba(117, 107, 234, 0.28);
+        transition:
+          transform 0.2s ease,
+          box-shadow 0.2s ease;
+        margin-top: 0;
+        transform-origin: center;
+        animation: ctaPulse 1.6s ease-in-out infinite;
+      }
+
+      .cta-btn:hover {
+        animation-play-state: paused;
+        transform: scale(1.04);
+      }
+
+      @keyframes ctaPulse {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+
+        50% {
+          transform: scale(1.1);
+        }
+      }
+      @keyframes previewBounce {
+        0% {
+          transform: scale(0.82);
+          opacity: 0;
+        }
+
+        60% {
+          transform: scale(1.08);
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+      .main-theme-image {
+        transform-origin: center;
+      }
+
+      .main-theme-image.animate {
+        animation: zoomBounce 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      @keyframes zoomBounce {
+        0% {
+          transform: scale(0.82);
+          opacity: 0;
+        }
+
+        60% {
+          transform: scale(1.08);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .theme-preview.animate {
+        animation: previewBounce 0.35s cubic-bezier(0.2, 0.9, 0.2, 1);
+      }
+      @media (max-width: 380px), (max-height: 700px) {
+        :root {
+          --preview-width: min(94vw, 340px);
+          --preview-height: clamp(200px, 22vh, 190px);
+          --theme-item-width: 80px;
+          ---theme-item-width: 80px;
+          --theme-item-gap: clamp(5px, 1.2vw, 9px);
+        }
+
+        .header-section h2 {
+          font-size: 20px;
+        }
+
+        .header-section h2 span {
+          font-size: 28px;
+        }
+
+        .theme-label {
+          margin-top: 0;
+        }
+      }
+
+      @media (min-width: 481px) and (min-height: 800px) {
+        :root {
+          --preview-width: min(88vw, 380px);
+          --preview-height: clamp(180px, 24vh, 250px);
+          --theme-item-width: clamp(78px, 16vw, 92px);
+          --theme-item-height: clamp(78px, 16vw, 92px);
+        }
+
+        .app-container {
+          gap: clamp(12px, 2vh, 18px);
+        }
+      }
+
+      .cta-btn:active {
+        transform: scale(0.97);
+        box-shadow: 0 4px 10px rgba(117, 107, 234, 0.22);
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .theme-thumbnail,
+        .cta-btn {
+          animation: none;
+          transition: none;
+        }
+
+        .theme-item:hover .theme-thumbnail,
+        .theme-item:active .theme-thumbnail,
+        .cta-btn:hover,
+        .cta-btn:active {
+          transform: none;
+        }
+      }
+
+      /* SCREEN TRANSITION CURTAIN */
+      .transition-curtain {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: #ffffff;
+        opacity: 0;
+        pointer-events: none;
+        z-index: 101;
+        transition: opacity 0.25s ease;
+      }
+
+      .transition-curtain.flash {
+        opacity: 0.25;
+      }
+      .theme-thumbnail {
+        position: relative;
+      }
+      #handHint {
+        position: absolute;
+
+        width: 90px;
+
+        height: 90px;
+
+        right: -35px;
+
+        bottom: -25px;
+
+        z-index: 100;
+
+        pointer-events: none;
+      }
+      #handHint {
+        position: absolute;
+
+        width: 70px;
+
+        height: 70px;
+
+        left: 75%;
+
+        top: 60%;
+
+        transform: translate(-50%, -50%);
+
+        pointer-events: none;
+      }
+      .btn-pink-cute.guide {
+        animation: thumbGuide 1.64s linear infinite;
+        transform-origin: center;
+      }
+
+      @keyframes thumbGuide {
+        /* Chờ ngón tay đi xuống */
+        0%,
+        45% {
+          transform: scale(1);
+        }
+
+        /* Thời điểm chạm */
+        55% {
+          transform: scale(1.1);
+        }
+
+        /* Bounce */
+        63% {
+          transform: scale(0.96);
+        }
+
+        72% {
+          transform: scale(1.05);
+        }
+
+        /* Trở lại bình thường */
+        100% {
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+
+  <body class="theme-football-cr7">
+    <div class="app-container" id="appContainer">
+      <!-- Transition flash overlay -->
+      <div class="transition-curtain" id="curtain"></div>
+
+      <!-- TITLE -->
+      <div class="header-section">
+        <h2>Pick Your <span>Keyboard Theme</span></h2>
+      </div>
+
+      <!-- MAIN IMAGE PREVIEW -->
+      <div class="keyboard-preview-wrapper" id="keyboardWrapper">
+        <img
+          id="mainThemeImage"
+          class="main-theme-image"
+          src=""
+          alt="Keyboard theme preview"
+        />
+      </div>
+
+      <!-- THEME SELECTOR GRID (3x2 Layout) -->
+      <div class="theme-grid">
+        <!-- Football / CR7 -->
+        <div
+          class="theme-item btn-football-cr7 active"
+          data-theme="theme-football-cr7"
+        >
+          <div class="theme-thumbnail thumb-football">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#e5c158">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"
+              />
+            </svg>
+          </div>
+          <span class="theme-label">CR7 Gold</span>
+        </div>
+
+        <!-- Pink Cute -->
+        <div class="theme-item btn-pink-cute" data-theme="theme-pink-cute">
+          <div class="theme-thumbnail thumb-pink">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#ff5e84">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              />
+            </svg>
+
+            <!-- Lottie -->
+          </div>
+          <div id="handHint"></div>
+          <span class="theme-label">Cute Pink</span>
+        </div>
+
+        <!-- Anime -->
+        <div class="theme-item btn-anime" data-theme="theme-anime">
+          <div class="theme-thumbnail thumb-anime">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#00f0ff">
+              <path
+                d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+              />
+            </svg>
+          </div>
+          <span class="theme-label">Anime</span>
+        </div>
+
+        <!-- Neon -->
+        <div class="theme-item btn-neon" data-theme="theme-neon">
+          <div class="theme-thumbnail thumb-neon">
+            <svg
+              class="thumb-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#39ff14"
+              stroke-width="2.5"
+            >
+              <circle cx="12" cy="12" r="8" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </div>
+          <span class="theme-label">Neon Glow</span>
+        </div>
+        <!-- dark -->
+        <div class="theme-item btn-dark" data-theme="theme-dark">
+          <div class="theme-thumbnail thumb-dark">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#ffffff">
+              <path
+                d="M12 2L2 22h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM12 17c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .55.45 1 1 1zm0-7c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z"
+              />
+            </svg>
+          </div>
+          <span class="theme-label">Dark</span>
+        </div>
+        <!-- Cat -->
+        <div class="theme-item btn-cat" data-theme="theme-cat">
+          <div class="theme-thumbnail thumb-cat">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#d35400">
+              <path
+                d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-3.5 9c-.8 0-1.5-.7-1.5-1.5S7.7 8 8.5 8s1.5.7 1.5 1.5S9.3 11 8.5 11zm7 0c-.8 0-1.5-.7-1.5-1.5S14.7 8 15.5 8s1.5.7 1.5 1.5S16.3 11 15.5 11zM12 18c-2.3 0-4.3-1.4-5.2-3.5h10.4c-.9 2.1-2.9 3.5-5.2 3.5z"
+              />
+            </svg>
+          </div>
+          <span class="theme-label">Cute Cat</span>
+        </div>
+
+        <!-- Dark Pro -->
+        <div class="theme-item btn-dark-pro" data-theme="theme-dark-pro">
+          <div class="theme-thumbnail thumb-dark">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#ffffff">
+              <path
+                d="M12 2L2 22h20L12 2zm0 3.99L19.53 19H4.47L12 5.99zM12 17c.55 0 1-.45 1-1v-4c0-.55-.45-1-1-1s-1 .45-1 1v4c0 .55.45 1 1 1zm0-7c.55 0 1-.45 1-1s-.45-1-1-1-1 .45-1 1 .45 1 1 1z"
+              />
+            </svg>
+          </div>
+          <span class="theme-label">Dark Pro</span>
+        </div>
+      </div>
+
+      <button class="cta-btn" id="ctaBtn">Apply Now!</button>
+    </div>
+    <script src="/assets/lottie.min.js"></script>
+    <script>
+      // DOM ELEMENTS
+      const themeItems = document.querySelectorAll(".theme-item");
+      const curtain = document.getElementById("curtain");
+      const mainThemeImage = document.getElementById("mainThemeImage");
+      const ctaBtn = document.getElementById("ctaBtn");
+      const PLAY_STORE_URL =
+        "https://play.google.com/store/apps/details?id=com.diy.rgb.led.mechanical.keyboard.custom.keyboard.game.keyboard&hl=vi";
+
+      // AUDIO PLACEHOLDERS
+      // ==================== AUDIO ====================
+
+      const BACKGROUND_MUSIC_SRC = "/assets/background-music-placeholder.mp3";
+      const PICK_SOUND_SRC = "/assets/pick-sound.mp3";
+
+      const backgroundMusic = new Audio(BACKGROUND_MUSIC_SRC);
+      backgroundMusic.loop = true;
+      backgroundMusic.preload = "auto";
+      backgroundMusic.volume = 0.2;
+
+      const pickSound = new Audio(PICK_SOUND_SRC);
+      pickSound.preload = "auto";
+      pickSound.volume = 0.8;
+
+      let audioUnlocked = false;
+
+      // Unlock audio sau lần tương tác đầu tiên
+      async function unlockAudio() {
+        if (audioUnlocked) return;
+
+        audioUnlocked = true;
+
+        try {
+          // unlock background
+          await backgroundMusic.play();
+          backgroundMusic.pause();
+          backgroundMusic.currentTime = 0;
+
+          // unlock pick
+          await pickSound.play();
+          pickSound.pause();
+          pickSound.currentTime = 0;
+
+          // bắt đầu nhạc nền
+          backgroundMusic.play().catch(() => {});
+        } catch (err) {
+          console.log("Audio unlock failed:", err);
+
+          audioUnlocked = false;
+        }
+      }
+
+      // Phát nhạc nền
+      function startBackgroundMusic() {
+        if (!audioUnlocked) return;
+
+        if (backgroundMusic.paused) {
+          backgroundMusic.play().catch(() => {});
+        }
+      }
+
+      // Phát âm thanh click
+      function playPickSound() {
+        if (!audioUnlocked) return;
+
+        const sound = pickSound.cloneNode();
+
+        sound.volume = pickSound.volume;
+
+        sound.play().catch(() => {});
+      }
+
+      // Unlock khi người dùng chạm lần đầu
+      document.addEventListener("pointerdown", unlockAudio, {
+        once: true,
+      });
+
+      // Paste Base64 values here. You can use full data URI or raw Base64 string.
+      const THEME_ASSETS = {
+        "theme-football-cr7": {
+          keyboardBg: "/assets/cr7.webp",
+          thumbnail: "/assets/cr7-thumb.webp",
+        },
+        "theme-pink-cute": {
+          keyboardBg: "/assets/neymar.webp",
+          thumbnail: "/assets/neymar-thumb.webp",
+        },
+        "theme-anime": {
+          keyboardBg: "assets/mbapbe.webp",
+          thumbnail: "assets/mbapbe-thumb.webp",
+        },
+        "theme-neon": {
+          keyboardBg: "assets/yamal.webp",
+          thumbnail: "assets/yamal-thumb.webp",
+        },
+        "theme-cat": {
+          keyboardBg: "assets/messi.webp",
+          thumbnail: "assets/messi-thumb.webp",
+        },
+        "theme-dark": {
+          keyboardBg: "assets/ag.webp",
+          thumbnail: "assets/ag-thumb.webp",
+        },
+        "theme-dark-pro": {
+          keyboardBg: "./assets/spain.webp",
+          thumbnail: "./assets/spain-thumb.webp",
+        },
+      };
+      function toImageSrc(input) {
+        if (!input) return "";
+
+        if (
+          input.startsWith("/") ||
+          input.startsWith("./") ||
+          input.startsWith("assets/") ||
+          input.startsWith("http") ||
+          input.startsWith("data:image")
+        ) {
+          return input;
+        }
+
+        return `data:image/png;base64,${input}`;
+      }
+      // ======================
+// DEFAULT
+// ======================
+const DEFAULT_THEME = "theme-football-cr7";
+
+const firstThumb = document.querySelector(".btn-pink-cute");
+const handHint = document.getElementById("handHint");
+
+let guideRemoved = false;
+let handAnimation = null;
+
+// ======================
+// THUMBNAILS
+// ======================
+function applyThemeThumbnails() {
+
+  themeItems.forEach((item) => {
+
+    const theme = item.dataset.theme;
+
+    // Ẩn theme mặc định
+    if (theme === DEFAULT_THEME) {
+      item.style.display = "none";
+      return;
+    }
+
+    item.style.display = "";
+
+    const thumb = item.querySelector(".theme-thumbnail");
+
+    if (!thumb) return;
+
+    let image = thumb.querySelector(".theme-thumbnail-image");
+
+    if (!image) {
+
+      image = document.createElement("img");
+
+      image.className = "theme-thumbnail-image";
+
+      thumb.appendChild(image);
+
+    }
+
+    image.src = THEME_ASSETS[theme].thumbnail;
+
+  });
+
+}
+
+// ======================
+// PREVIEW
+// ======================
+function applyKeyboardThemeImage(theme) {
+
+  mainThemeImage.classList.remove("animate");
+
+  void mainThemeImage.offsetWidth;
+
+  mainThemeImage.src =
+    THEME_ASSETS[theme].keyboardBg ||
+    THEME_ASSETS[theme].thumbnail;
+
+  requestAnimationFrame(() => {
+
+    mainThemeImage.classList.add("animate");
+
+  });
+
+}
+
+// ======================
+// REMOVE GUIDE
+// ======================
+function removeGuide() {
+
+  if (guideRemoved) return;
+
+  guideRemoved = true;
+
+  firstThumb?.classList.remove("guide");
+
+  if (handAnimation) {
+    handAnimation.stop();
+  }
+
+  if (handHint) {
+    handHint.style.display = "none";
+  }
+
+}
+
+// ======================
+// THEME CLICK
+// ======================
+themeItems.forEach((item) => {
+
+  item.addEventListener("click", (e) => {
+
+    e.stopPropagation();
+
+    removeGuide();
+
+    const theme = item.dataset.theme;
+
+    startBackgroundMusic();
+
+    playPickSound();
+
+    document.body.className = theme;
+
+    curtain.classList.add("flash");
+
+    setTimeout(() => {
+
+      curtain.classList.remove("flash");
+
+    },200);
+
+    themeItems.forEach(t => t.classList.remove("active"));
+
+    item.classList.add("active");
+
+    applyKeyboardThemeImage(theme);
+
+  });
+
+});
+
+// ======================
+// CTA
+// ======================
+ctaBtn.addEventListener("click", () => {
+
+  startBackgroundMusic();
+
+  window.open(PLAY_STORE_URL,"_blank");
+
+});
+
+// ======================
+// LOTTIE
+// ======================
+window.addEventListener("DOMContentLoaded", () => {
+
+  handAnimation = lottie.loadAnimation({
+
+    container: handHint,
+
+    renderer: "svg",
+
+    loop: true,
+
+    autoplay: true,
+
+    path: "/assets/Hand-tap.json",
+
+  });
+
+  firstThumb?.classList.add("guide");
+
+  applyThemeThumbnails();
+
+  applyKeyboardThemeImage(DEFAULT_THEME);
+
+});
+    </script>
+  </body>
+</html>
