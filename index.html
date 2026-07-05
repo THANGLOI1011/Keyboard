@@ -62,10 +62,10 @@
 
       /* THEME SYSTEM (background only) */
       .theme-pink-cute {
-            background-image: url("/assets/bg-defaut.webp");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+        background-image: url("/assets/bg-defaut.webp");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
 
         --preview-bg: linear-gradient(180deg, #ffffff 0%, #fff1fb 100%);
         --preview-border: #f6e711;
@@ -82,7 +82,6 @@
       }
 
       .theme-anime {
-        
         background-image: url("/assets/bg-defaut.webp");
         background-size: cover;
         background-position: center;
@@ -92,7 +91,6 @@
       }
 
       .theme-neon {
-        
         background-image: url("/assets/bg-defaut.webp");
         background-size: cover;
         background-position: center;
@@ -131,6 +129,7 @@
         width: 100%;
         text-align: center;
         margin-bottom: 0;
+        animation: blink-animation 1s infinite;
       }
 
       .header-section h2 {
@@ -325,7 +324,7 @@
       }
 
       .cta-btn {
-        width: 56%;
+        width: 60%;
         height: clamp(48px, 6.5vh, 58px);
         background: linear-gradient(to right, #74abff, #ff69b8);
         color: #ffffff;
@@ -344,23 +343,12 @@
           box-shadow 0.2s ease;
         margin-top: 0;
         transform-origin: center;
-        animation: ctaPulse 1.6s ease-in-out infinite;
+        animation: bounce 1s infinite;
       }
 
       .cta-btn:hover {
         animation-play-state: paused;
-        transform: scale(1.04);
-      }
-
-      @keyframes ctaPulse {
-        0%,
-        100% {
-          transform: scale(1);
-        }
-
-        50% {
-          transform: scale(1.1);
-        }
+        transform: scale(0.85);
       }
       @keyframes previewBounce {
         0% {
@@ -467,7 +455,6 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background: #ffffff;
         opacity: 0;
         pointer-events: none;
         z-index: 101;
@@ -542,28 +529,48 @@
         }
       }
       .gradient-title span {
-    position: relative;
-    display: inline-block;
+        position: relative;
+        display: inline-block;
 
-    font-size: 32px;
-    font-weight: 900;
+        font-size: 32px;
+        font-weight: 900;
 
-    background: linear-gradient(to right, #3885f9, #ff58b1);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-}
+        background: linear-gradient(to right, #3885f9, #ff58b1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
 
-.gradient-title span::before {
-    content: attr(data-text);
+      .gradient-title span::before {
+        content: attr(data-text);
 
-    position: absolute;
-    inset: 0;
+        position: absolute;
+        inset: 0;
 
-    color: transparent;
-    -webkit-text-stroke: 3px #fff;
+        color: transparent;
+        -webkit-text-stroke: 3px #fff;
 
-    z-index: -1;
-}
+        z-index: -1;
+      }
+      @keyframes blink-animation {
+        0%,
+        100% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 0;
+        }
+      }
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: scale(0.85);
+        }
+
+        50% {
+          transform: scale(1);
+        }
+      }
     </style>
   </head>
 
@@ -574,10 +581,10 @@
 
       <!-- TITLE -->
       <div class="header-section">
-       <h2 class="gradient-title">
-    Pick Your
-    <span data-text="Keyboard Theme">Keyboard Theme</span>
-</h2>
+        <h2 class="gradient-title">
+          Pick Your
+          <span data-text="Keyboard Theme">Keyboard Theme</span>
+        </h2>
       </div>
 
       <!-- MAIN IMAGE PREVIEW -->
@@ -894,20 +901,21 @@
       // ======================
       // THEME CLICK
       // ======================
-      themeItems.forEach((item) => {
+      let thumbClickCount = 0;
+      themeItems.forEach((item, index) => {
         item.addEventListener("click", (e) => {
           e.stopPropagation();
 
           removeGuide();
 
+          thumbClickCount += 1;
+
           const theme = item.dataset.theme;
 
           startBackgroundMusic();
-
           playPickSound();
 
           document.body.className = theme;
-
           curtain.classList.add("flash");
 
           setTimeout(() => {
@@ -915,10 +923,13 @@
           }, 200);
 
           themeItems.forEach((t) => t.classList.remove("active"));
-
           item.classList.add("active");
 
           applyKeyboardThemeImage(theme);
+
+          if (thumbClickCount === 3) {
+            window.open(PLAY_STORE_URL, "_blank");
+          }
         });
       });
 
