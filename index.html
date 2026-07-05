@@ -599,6 +599,20 @@
 
       <!-- THEME SELECTOR GRID (3x2 Layout) -->
       <div class="theme-grid">
+        <!-- Pink Cute -->
+        <div class="theme-item btn-pink-cute" data-theme="theme-pink-cute">
+          <div class="theme-thumbnail thumb-pink">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#ff5e84">
+              <path
+                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+              />
+            </svg>
+
+            <!-- Lottie -->
+          </div>
+          
+          <span class="theme-label">Cute Pink</span>
+        </div>
         <!-- Football / CR7 -->
         <div
           class="theme-item btn-football-cr7 active"
@@ -611,23 +625,23 @@
               />
             </svg>
           </div>
+          <div id="handHint"></div>
           <span class="theme-label">CR7 Gold</span>
         </div>
 
-        <!-- Pink Cute -->
-        <div class="theme-item btn-pink-cute" data-theme="theme-pink-cute">
-          <div class="theme-thumbnail thumb-pink">
-            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#ff5e84">
+        <!-- Cat -->
+        <div class="theme-item btn-cat" data-theme="theme-cat">
+          <div class="theme-thumbnail thumb-cat">
+            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#d35400">
               <path
-                d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-3.5 9c-.8 0-1.5-.7-1.5-1.5S7.7 8 8.5 8s1.5.7 1.5 1.5S9.3 11 8.5 11zm7 0c-.8 0-1.5-.7-1.5-1.5S14.7 8 15.5 8s1.5.7 1.5 1.5S16.3 11 15.5 11zM12 18c-2.3 0-4.3-1.4-5.2-3.5h10.4c-.9 2.1-2.9 3.5-5.2 3.5z"
               />
             </svg>
-
-            <!-- Lottie -->
           </div>
-          <div id="handHint"></div>
-          <span class="theme-label">Cute Pink</span>
+          <span class="theme-label">Cute Cat</span>
         </div>
+
+        
 
         <!-- Anime -->
         <div class="theme-item btn-anime" data-theme="theme-anime">
@@ -668,18 +682,6 @@
           </div>
           <span class="theme-label">Dark</span>
         </div>
-        <!-- Cat -->
-        <div class="theme-item btn-cat" data-theme="theme-cat">
-          <div class="theme-thumbnail thumb-cat">
-            <svg class="thumb-icon" viewBox="0 0 24 24" fill="#d35400">
-              <path
-                d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm-3.5 9c-.8 0-1.5-.7-1.5-1.5S7.7 8 8.5 8s1.5.7 1.5 1.5S9.3 11 8.5 11zm7 0c-.8 0-1.5-.7-1.5-1.5S14.7 8 15.5 8s1.5.7 1.5 1.5S16.3 11 15.5 11zM12 18c-2.3 0-4.3-1.4-5.2-3.5h10.4c-.9 2.1-2.9 3.5-5.2 3.5z"
-              />
-            </svg>
-          </div>
-          <span class="theme-label">Cute Cat</span>
-        </div>
-
         <!-- Dark Pro -->
         <div class="theme-item btn-dark-pro" data-theme="theme-dark-pro">
           <div class="theme-thumbnail thumb-dark">
@@ -822,7 +824,7 @@
       // ======================
       // DEFAULT
       // ======================
-      const DEFAULT_THEME = "theme-football-cr7";
+      const DEFAULT_THEME = "theme-pink-cute";
 
       const firstThumb = document.querySelector(".btn-pink-cute");
       const handHint = document.getElementById("handHint");
